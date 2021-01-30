@@ -1,5 +1,5 @@
 <template>
-    <toggle-switch
+    <!-- <toggle-switch
     :switched="speakerMuted"
     @switched="speakerMuted = !speakerMuted"
   >
@@ -31,17 +31,19 @@
     @switched="micMuted = !micMuted"
     :aria-label="label"
     :disabled="true"
-  />
+  /> -->
+  <faq-list />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import ToggleSwitch from "./components/ToggleSwitch.vue";
-import HelloWorld from './components/HelloWorld.vue'
+import FaqList from './components/FaqList.vue'
 
 export default defineComponent({
    components: {
     ToggleSwitch,
+    FaqList,
   },
 
   data() {
@@ -53,7 +55,7 @@ export default defineComponent({
   },
 
   methods: {
-    changeLabel() {
+    changeLabel(){
       this.label = "Mute camera";
     },
   },
@@ -61,12 +63,4 @@ export default defineComponent({
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
