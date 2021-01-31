@@ -217,7 +217,6 @@ import usingMouseDetector from "./usingMouseDetector";
 export default defineComponent({
   setup() {
     usingMouseDetector({ applyTo: ".faq" });
-    console.log({ usingMouseDetector });
     let disclosures = useDisclosure({ number: 4, expanded: [0] });
     return { disclosures };
   },
