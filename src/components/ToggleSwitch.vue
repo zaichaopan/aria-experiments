@@ -10,11 +10,7 @@
       :style="switchBtnStyle"
       v-bind="$attrs"
     >
-      <span
-        class="toggle-switch__switch"
-        aria-hidden="true"
-        :style="switchSpanStyle"
-      ></span>
+      <span class="toggle-switch__switch" aria-hidden="true" :style="switchSpanStyle"></span>
     </button>
     <label
       v-if="hasLabel"
@@ -28,9 +24,8 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent } from 'vue'
-import ToggleSwitch from "./components/ToggleSwitch.vue";
-import getRandString from "./randomString";
+import { ref, defineComponent } from "vue";
+import {randomString} from "../utils";
 
 export default defineComponent({
   name: "ToggleSwitch",
@@ -66,7 +61,11 @@ export default defineComponent({
     },
   },
   computed: {
-    switchBtnStyle() {
+    switchBtnStyle(): {
+      width: string;
+      height: string;
+      background: string;
+    } {
       return {
         width: `${this.width}px`,
         height: `${this.height}px`,
@@ -75,7 +74,11 @@ export default defineComponent({
           : this.backgroundUnchecked,
       };
     },
-    switchSpanStyle() {
+    switchSpanStyle(): {
+      width: string;
+      height: string;
+      left: string;
+    } {
       return {
         width: `${this.height - 3}px`,
         height: `${this.height - 3}px`,
@@ -84,16 +87,14 @@ export default defineComponent({
     },
   },
 
-  setup(props, context) {
-    const { randomString } = getRandString();
+  setup(_props,context) {;
     const hasLabel = !!context.slots.default;
-
     return {
-      randomString,
+      randomString: randomString(),
       hasLabel,
     };
   },
-})
+});
 </script>
 
 <style scoped>
