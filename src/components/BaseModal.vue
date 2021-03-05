@@ -45,9 +45,8 @@ export default defineComponent({
     },
   },
   setup(props) {
-    let visible = ref(false);
+    const visible = ref(false);
     const title = randomString();
-
     const { start: startFocusTrap, stop: stopFocusTrap } = useFocusTrap();
     const {
       start: startClickOutiside,
