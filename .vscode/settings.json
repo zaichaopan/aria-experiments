@@ -1,9 +1,24 @@
 {
   "cSpell.words": [
+    "active",
+    "activedescendant",
     "aria",
+    "defocus",
+    "descentdant",
     "describedby",
     "fieldset",
+    "item",
+    "keyframes",
+    "linecap",
+    "linejoin",
+    "listbox",
+    "multiselectable",
+    "nbsp",
+    "node",
+    "optgroup",
     "rgba",
-    "semibold"
-  ]
+    "semibold",
+    "stroke"
+  ],
+  "volar.tsPlugin": true
 }
