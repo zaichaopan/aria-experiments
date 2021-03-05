@@ -1,9 +1,13 @@
-export default function useClickOutside() {
+export type clickOutside = {
+  on: (container: HTMLElement | null, onClickOutsideFn: (event?: MouseEvent) => void) => void,
+  dispose: ()=>void
+}
+
+export default function useClickOutside(): clickOutside {
   let _container: HTMLElement | null
   let _onClickOutsideFn: (event?: MouseEvent) => void
 
   const onclickOutsideFnWrapper = (event: MouseEvent) => {
-    console.log('click outside', _container)
     if (!_container) {
       return
     }
@@ -14,12 +18,12 @@ export default function useClickOutside() {
   }
 
   return {
-    start: (container: HTMLElement | null, onClickOutsideFn: (event?: MouseEvent) => void) => {
+    on: (container: HTMLElement | null, onClickOutsideFn: (event?: MouseEvent) => void) => {
       _container = container
       _onClickOutsideFn = onClickOutsideFn
       window.addEventListener('mousedown', onclickOutsideFnWrapper);
     },
-    stop: () => {
+    dispose: () => {
       window.removeEventListener('mousedown', onclickOutsideFnWrapper)
     }
   }

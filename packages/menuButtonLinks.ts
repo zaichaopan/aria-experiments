@@ -1,5 +1,5 @@
 import { EVENT_KEY } from './keyboard'
-import useClickOutside from './useClickOutside'
+import useClickOutside, { clickOutside } from './useClickOutside'
 import { randomString } from './string'
 import { findNextSibiling, findPreviousSibiling, useFindItemMatchingChar, findItemMatchingChar } from './dom'
 
@@ -7,8 +7,7 @@ export default class MenuButtonLinks {
   protected button: HTMLElement
   protected menu: HTMLElement
   protected findMatchingItem: findItemMatchingChar
-  protected startClickOutside: (container: HTMLElement | null, onClickOutsideFn: (event?: MouseEvent) => void) => void
-  protected stopclickOutside: () => void
+  protected clickOutside: clickOutside
 
   constructor({
     button,
@@ -28,9 +27,7 @@ export default class MenuButtonLinks {
     this.setupMenuItems()
     this.registerbuttonEvents()
     this.findMatchingItem = useFindItemMatchingChar()
-    let { start: startClickOutside, stop: stopClickOutside } = useClickOutside()
-    this.startClickOutside = startClickOutside
-    this.stopclickOutside = stopClickOutside
+    this.clickOutside = useClickOutside()
   }
 
   setupAriaAttribute() {
@@ -122,7 +119,7 @@ export default class MenuButtonLinks {
     if (this.menu && this.button) {
       this.menu.style.display = 'block';
       this.button.setAttribute('aria-expanded', 'true');
-      this.startClickOutside(this.button.parentElement, this.closePopup.bind(this))
+      this.clickOutside.on(this.button.parentElement, this.closePopup.bind(this))
     }
   }
 
@@ -131,7 +128,7 @@ export default class MenuButtonLinks {
       if (this.menu && this.button) {
         this.button.removeAttribute('aria-expanded');
         this.menu.style.display = 'none';
-        this.stopclickOutside()
+        this.clickOutside.dispose()
       }
     }
   }

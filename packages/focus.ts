@@ -45,8 +45,8 @@ export function getFocusableChildren(node: HTMLElement): HTMLElement[] {
 }
 
 type useFocusTrapReturnType = {
-  start: (container: HTMLElement | null) => void,
-  stop: () => void
+  on: (container: HTMLElement | null) => void,
+  dispose: () => void
 }
 
 export function useFocusTrap(): useFocusTrapReturnType {
@@ -75,16 +75,16 @@ export function useFocusTrap(): useFocusTrapReturnType {
     }
   }
 
-  const start = (container: HTMLElement | null) => {
+  const on = (container: HTMLElement | null) => {
     _container = container
     document.addEventListener('keydown', trapTabKey, true)
   }
 
-  const stop = () => {
+  const dispose = () => {
     document.removeEventListener('keydown', trapTabKey, true)
   }
 
   return {
-    start, stop
+    on, dispose
   }
 }

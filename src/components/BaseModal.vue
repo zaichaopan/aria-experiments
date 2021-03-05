@@ -32,6 +32,7 @@ import useModal from "../../packages/useModal";
 import { useFocusTrap, setFocusToFirstItem } from "../../packages/focus";
 import useClickOutside from "../../packages/useClickOutside";
 import { randomString } from "../../packages/string";
+import { useEscKeyHandler } from "../../packages/keyboard";
 
 export default defineComponent({
   props: {
@@ -43,15 +44,17 @@ export default defineComponent({
       type: String as PropType<"dialog" | "alertdialog">,
       default: "dialog",
     },
+    clickToClose: {
+      type: Boolean,
+      default: true,
+    },
   },
   setup(props) {
     const visible = ref(false);
     const title = randomString();
-    const { start: startFocusTrap, stop: stopFocusTrap } = useFocusTrap();
-    const {
-      start: startClickOutiside,
-      stop: stopclickOutside,
-    } = useClickOutside();
+    const focusTrap = useFocusTrap();
+    const escKeyHandler = useEscKeyHandler();
+    const clickOutside = useClickOutside();
     const { name, hide } = useModal();
 
     const showModal = () => {
@@ -60,18 +63,26 @@ export default defineComponent({
         let modal = document.querySelector(
           `.${name.value}-modal`
         ) as HTMLElement;
-        startFocusTrap(modal);
-        startClickOutiside(modal, () => {
-          hide(props.name);
+        focusTrap.on(modal);
+        clickOutside.on(modal, () => {
+          if (props.clickToClose) {
+            hide(props.name);
+          }
         });
         setFocusToFirstItem(modal);
+        escKeyHandler.on(() => {
+          if (props.clickToClose) {
+            hide(props.name);
+          }
+        });
       });
     };
 
     const hideModal = () => {
       visible.value = false;
-      stopFocusTrap();
-      stopclickOutside();
+      focusTrap.dispose();
+      clickOutside.dispose()
+      escKeyHandler.dispose()
     };
 
     watch(name, () => {
