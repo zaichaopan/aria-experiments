@@ -23,8 +23,7 @@
 import {
   defineComponent,
   watch,
-  ref,
-  nextTick,
+  computed,
   onUnmounted,
   PropType,
 } from "vue";
@@ -50,7 +49,9 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const visible = ref(false);
+    const visible = computed(() => {
+      return name.value === props.name;
+    });
     const title = randomString();
     const focusTrap = useFocusTrap();
     const escKeyHandler = useEscKeyHandler();
@@ -58,36 +59,37 @@ export default defineComponent({
     const { name, hide } = useModal();
 
     const showModal = () => {
-      visible.value = true;
-      nextTick(() => {
-        let modal = document.querySelector(
-          `.${name.value}-modal`
-        ) as HTMLElement;
-        focusTrap.on(modal);
-        clickOutside.on(modal, () => {
-          if (props.clickToClose) {
-            hide(props.name);
-          }
-        });
-        setFocusToFirstItem(modal);
-        escKeyHandler.on(() => {
-          if (props.clickToClose) {
-            hide(props.name);
-          }
-        });
+      const modal = document.querySelector(`.${name.value}-modal`) as HTMLElement;
+      focusTrap.on(modal);
+      setFocusToFirstItem(modal);
+      clickOutside.on(modal, () => {
+        if (props.clickToClose) {
+          hide(props.name);
+        }
+      });
+
+      escKeyHandler.on(() => {
+        if (props.clickToClose) {
+          hide(props.name);
+        }
       });
     };
 
     const hideModal = () => {
-      visible.value = false;
       focusTrap.dispose();
-      clickOutside.dispose()
-      escKeyHandler.dispose()
+      clickOutside.dispose();
+      escKeyHandler.dispose();
     };
 
-    watch(name, () => {
-      name.value === props.name ? showModal() : hideModal();
-    });
+    watch(
+      visible,
+      () => {
+        visible.value ? showModal() : hideModal();
+      },
+      {
+        flush: "post",
+      }
+    );
 
     onUnmounted(() => {
       if (visible.value) {
