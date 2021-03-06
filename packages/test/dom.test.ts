@@ -35,7 +35,6 @@ describe('dom.ts test', () => {
         <ol>d</ol>
       </ul>
     `
-
       options = Array.from(document.querySelectorAll('ol')).map(option => option as HTMLElement)
       current = options[2]
     })
@@ -63,4 +62,4 @@ describe('dom.ts test', () => {
       expect(item.innerText).toBe('b')
     })
   })
-});
+})

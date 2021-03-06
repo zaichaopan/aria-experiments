@@ -13,28 +13,21 @@ export const FOCUSABLE_SELCTORS = [
   '[tabindex]:not([tabindex^="-"])',
 ]
 
-export function setFocusToFirstItem(node: HTMLElement | null) {
-  if (!node) {
+export function setFocusToFirstItem(container: HTMLElement | Element | null) {
+  if (!container) {
     return
   }
-  const focusableChildren = getFocusableChildren(node)
-  const focused = node.querySelector('[autofocus]') || focusableChildren[0]
+  const test = container.querySelectorAll('input')
+  const focusableChildren = getFocusableChildren(container as HTMLElement)
+  const focused = container.querySelector('[autofocus]') || focusableChildren[0]
 
   if (focused) {
     (focused as HTMLElement).focus()
   }
 }
 
-export function setFocusToLastItem(node: HTMLElement) {
-  const focusableChildren = getFocusableChildren(node)
-
-  if (focusableChildren.length > 0) {
-    focusableChildren[focusableChildren.length - 1].focus()
-  }
-}
-
-export function getFocusableChildren(node: HTMLElement): HTMLElement[] {
-  return Array.from(node.querySelectorAll(FOCUSABLE_SELCTORS.join(','))).filter((child) => {
+export function getFocusableChildren(container: HTMLElement): HTMLElement[] {
+  return Array.from(container.querySelectorAll(FOCUSABLE_SELCTORS.join(','))).filter((child) => {
     let childNode = child as HTMLElement
     return !!(
       childNode.offsetWidth ||
@@ -45,7 +38,7 @@ export function getFocusableChildren(node: HTMLElement): HTMLElement[] {
 }
 
 type useFocusTrapReturnType = {
-  on: (container: HTMLElement | null) => void,
+  on: (container: HTMLElement | Element | null) => void,
   dispose: () => void
 }
 
@@ -64,19 +57,19 @@ export function useFocusTrap(): useFocusTrapReturnType {
     const focusedItemIndex = focusableChildren.indexOf(document.activeElement as HTMLElement)
 
     if (event.shiftKey && focusedItemIndex === 0) {
-      focusableChildren[focusableChildren.length - 1].focus()
+      focusableChildren[focusableChildren.length - 1]?.focus()
       event.preventDefault()
     } else if (
       !event.shiftKey &&
       focusedItemIndex === focusableChildren.length - 1
     ) {
-      focusableChildren[0].focus()
+      focusableChildren[0]?.focus()
       event.preventDefault()
     }
   }
 
-  const on = (container: HTMLElement | null) => {
-    _container = container
+  const on = (container: HTMLElement | Element | null) => {
+    _container = container as HTMLElement
     document.addEventListener('keydown', trapTabKey, true)
   }
 
