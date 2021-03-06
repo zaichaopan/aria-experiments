@@ -59,7 +59,7 @@ describe('focus.ts test', () => {
     focusTrap.on(container)
     genderInput.focus()
     document.dispatchEvent(event)
-    // tab event in jsDom does not change active elment:  https://github.com/jsdom/jsdom/issues/2102
+    // tab event in jsDom does not change active element:  https://github.com/jsdom/jsdom/issues/2102
     // assert focus moved from last to first element
     expect(spyNameInput).toHaveBeenCalledTimes(1)
   })
