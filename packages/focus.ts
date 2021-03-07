@@ -17,32 +17,33 @@ export function setFocusToFirstItem(container: HTMLElement | Element | null) {
   if (!container) {
     return
   }
-  const test = container.querySelectorAll('input')
   const focusableChildren = getFocusableChildren(container as HTMLElement)
   const focused = container.querySelector('[autofocus]') || focusableChildren[0]
 
   if (focused) {
-    (focused as HTMLElement).focus()
+    ;(focused as HTMLElement).focus()
   }
 }
 
 export function getFocusableChildren(container: HTMLElement): HTMLElement[] {
-  return Array.from(container.querySelectorAll(FOCUSABLE_SELCTORS.join(','))).filter((child) => {
-    let childNode = child as HTMLElement
-    return !!(
-      childNode.offsetWidth ||
-      childNode.offsetHeight ||
-      childNode.getClientRects().length
-    )
-  }).map(item => item as HTMLElement)
+  return Array.from(container.querySelectorAll(FOCUSABLE_SELCTORS.join(',')))
+    .filter((child) => {
+      const childNode = child as HTMLElement
+      return !!(
+        childNode.offsetWidth ||
+        childNode.offsetHeight ||
+        childNode.getClientRects().length
+      )
+    })
+    .map((item) => item as HTMLElement)
 }
 
-type useFocusTrapReturnType = {
-  on: (container: HTMLElement | Element | null) => void,
+type focusTrap = {
+  on: (container: HTMLElement | Element | null) => void
   dispose: () => void
 }
 
-export function useFocusTrap(): useFocusTrapReturnType {
+export function useFocusTrap(): focusTrap {
   let _container: HTMLElement | null
 
   const trapTabKey = (event: KeyboardEvent) => {
@@ -54,7 +55,9 @@ export function useFocusTrap(): useFocusTrapReturnType {
       return
     }
 
-    const focusedItemIndex = focusableChildren.indexOf(document.activeElement as HTMLElement)
+    const focusedItemIndex = focusableChildren.indexOf(
+      document.activeElement as HTMLElement
+    )
 
     if (event.shiftKey && focusedItemIndex === 0) {
       focusableChildren[focusableChildren.length - 1]?.focus()
@@ -78,6 +81,15 @@ export function useFocusTrap(): useFocusTrapReturnType {
   }
 
   return {
-    on, dispose
+    on,
+    dispose,
+  }
+}
+
+export function useRestoreFocus(): ()=> void {
+  const focusNeededRestore = document.activeElement as HTMLElement
+
+  return () => {
+    focusNeededRestore?.focus()   
   }
 }

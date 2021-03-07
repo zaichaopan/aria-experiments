@@ -88,7 +88,7 @@ export default class Listbox {
 
   setOnSelect(onSelect: OnSelectFunc) {
     this.onSelect = () => {
-      let value = Array.from(this.listbox.querySelectorAll('[aria-selected="true"]'))
+      const value = Array.from(this.listbox.querySelectorAll('[aria-selected="true"]'))
         .map(item => item.getAttribute('data-value') || '')
       onSelect(value)
     }
@@ -123,7 +123,7 @@ export default class Listbox {
   }
 
   setupListboxFocus(): void {
-    let firstSelectedItem = this.listbox.querySelector('[aria-selected="true"]')
+    const firstSelectedItem = this.listbox.querySelector('[aria-selected="true"]')
 
     if (firstSelectedItem) {
       this.focusItem(firstSelectedItem, { setSelected: false })
@@ -155,7 +155,7 @@ export default class Listbox {
   }
 
   checkListboxShow(event: KeyboardEvent) {
-    let key = event.key
+    const key = event.key
     switch (key) {
       case EVENT_KEY.UP:
       case EVENT_KEY.ARROW_UP:
@@ -172,7 +172,7 @@ export default class Listbox {
     if (element) {
       element.classList.remove(this.classNameOnFocus)
       if (deSelected) {
-        let selected = this.listbox.querySelector('[aria-selected="true"]')
+        const selected = this.listbox.querySelector('[aria-selected="true"]')
         if (selected) {
           selected.removeAttribute('aria-selected')
         }
@@ -202,7 +202,7 @@ export default class Listbox {
       return
     }
 
-    let target = <HTMLElement>event?.target
+    const target = <HTMLElement>event?.target
 
     if (target.getAttribute('role') !== 'option' || target.getAttribute('aria-disabled') === 'true') {
       return
@@ -228,7 +228,7 @@ export default class Listbox {
   }
 
   focusFirstItem({ setSelected = false }: { setSelected: boolean }): void {
-    let firstItem = this.getAvailableListItems()[0]
+    const firstItem = this.getAvailableListItems()[0]
 
     if (firstItem) {
       this.focusItem(firstItem, { setSelected })
@@ -236,7 +236,7 @@ export default class Listbox {
   }
 
   focusLastItem({ setSelected = false }: { setSelected: boolean }): void {
-    let itemList = this.getAvailableListItems()
+    const itemList = this.getAvailableListItems()
 
     if (itemList.length) {
       this.focusItem(itemList[itemList.length - 1], { setSelected })
@@ -244,12 +244,12 @@ export default class Listbox {
   }
 
   findPreviousOption(currentOption: HTMLElement): HTMLElement | null {
-    let allOptions = this.getAvailableListItems()
+    const allOptions = this.getAvailableListItems()
     return findPreviousSibiling(allOptions, currentOption)
   }
 
   findNextOption(currentOption: HTMLElement): HTMLElement | null {
-    let allOptions = this.getAvailableListItems()
+    const allOptions = this.getAvailableListItems()
     return findNextSibiling(allOptions, currentOption)
   }
 
@@ -259,11 +259,11 @@ export default class Listbox {
       return
     }
 
-    let allOptions = this.getAvailableListItems()
-    let startIndex = typeof start === 'number'
+    const allOptions = this.getAvailableListItems()
+    const startIndex = typeof start === 'number'
       ? start
       : this.getElementIndex(start, allOptions)
-    let endIndex = typeof end === 'number'
+    const endIndex = typeof end === 'number'
       ? end
       : this.getElementIndex(end, allOptions)
 
@@ -273,7 +273,7 @@ export default class Listbox {
     }
 
     for (let index = 0; index < allOptions.length; index++) {
-      let selected = this.checkInRange(index, startIndex, endIndex)
+      const selected = this.checkInRange(index, startIndex, endIndex)
       allOptions[index].setAttribute('aria-selected', selected + '')
     }
 
@@ -281,13 +281,13 @@ export default class Listbox {
   }
 
   getElementIndex(option: Element, allOptions: Element[]) {
-    let optionIndex = allOptions.indexOf(option)
+    const optionIndex = allOptions.indexOf(option)
     return typeof optionIndex === 'number' ? optionIndex : null
   }
 
   checkInRange(index: number, start: number, end: number): boolean {
-    let rangeStart = start < end ? start : end
-    let rangeEnd = start < end ? end : start
+    const rangeStart = start < end ? start : end
+    const rangeEnd = start < end ? end : start
     return index >= rangeStart && index <= rangeEnd
   }
 
@@ -297,7 +297,7 @@ export default class Listbox {
   * @param evt
   */
   checkMouseDown(event: MouseEvent) {
-    let target = <HTMLElement>event?.target
+    const target = <HTMLElement>event?.target
 
     if (!event.target) {
       return
@@ -317,14 +317,14 @@ export default class Listbox {
       return
     }
 
-    let selectedOption = document.getElementById(this.activeDescendant)
+    const selectedOption = document.getElementById(this.activeDescendant)
 
     if (
       selectedOption &&
       this.listbox.scrollHeight > this.listbox.clientHeight
     ) {
-      let scrollBottom = this.listbox.clientHeight + this.listbox.scrollTop
-      let elementBottom = selectedOption.offsetTop + selectedOption.offsetHeight
+      const scrollBottom = this.listbox.clientHeight + this.listbox.scrollTop
+      const elementBottom = selectedOption.offsetTop + selectedOption.offsetHeight
 
       if (elementBottom > scrollBottom) {
         this.listbox.scrollTop = elementBottom - this.listbox.clientHeight
@@ -354,10 +354,10 @@ export default class Listbox {
   }
 
   checkKeyPress(event: KeyboardEvent): void {
-    let key = event.key
-    let lastActiveId = this.activeDescendant
-    let allOptions = this.getAvailableListItems()
-    let currentItem = this.activeDescendant
+    const key = event.key
+    const lastActiveId = this.activeDescendant
+    const allOptions = this.getAvailableListItems()
+    const currentItem = this.activeDescendant
       ? document.getElementById(this.activeDescendant) || allOptions[0]
       : null
     let nextItem = currentItem
@@ -424,8 +424,8 @@ export default class Listbox {
         this.hideListbox()
         break
       default:
-        let target = event.target as HTMLElement
-        let itemToFocus = this.findMatchingItem(this.getAvailableListItems(), target, key)
+        const target = event.target as HTMLElement
+        const itemToFocus = this.findMatchingItem(this.getAvailableListItems(), target, key)
         this.focusItem(itemToFocus, { setSelected: false })
         break
     }

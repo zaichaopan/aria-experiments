@@ -33,7 +33,7 @@ describe('listbox test', () => {
     const options = document.querySelector("ul#listbox").querySelectorAll('li')
     const desiredOption = options[2]
     const event = new MouseEvent("click", {})
-    Object.defineProperty(event, 'target', { value: desiredOption, enumerable: true });
+    Object.defineProperty(event, 'target', { value: desiredOption, enumerable: true })
     document.querySelector("ul#listbox").dispatchEvent(event)
     expect(selectedOption).toBe(desiredOption.getAttribute('data-value'))
   })

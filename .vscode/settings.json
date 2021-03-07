@@ -1,24 +1,16 @@
 {
-  "cSpell.words": [
-    "active",
-    "activedescendant",
-    "aria",
-    "defocus",
-    "descentdant",
-    "describedby",
-    "fieldset",
-    "item",
-    "keyframes",
-    "linecap",
-    "linejoin",
-    "listbox",
-    "multiselectable",
-    "nbsp",
-    "node",
-    "optgroup",
-    "rgba",
-    "semibold",
-    "stroke"
-  ],
-  "volar.tsPlugin": true
+  "volar.tsPlugin": true,
+  "eslint.format.enable": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

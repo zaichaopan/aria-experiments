@@ -18,7 +18,7 @@ export default class MenuButtonLinks {
   }) {
 
     if (!button || !menu) {
-      throw new Error("Menu or button is missing!");
+      throw new Error("Menu or button is missing!")
     }
 
     this.button = button
@@ -58,55 +58,55 @@ export default class MenuButtonLinks {
 
   setupMenuItems() {
     Array.from(this.getAllAvailableMenuitems()).forEach(node => {
-      let menuitem = node as HTMLElement
+      const menuitem = node as HTMLElement
       menuitem.tabIndex = -1
-      menuitem.addEventListener('keydown', this.onMenuitemKeydown.bind(this));
-      menuitem.addEventListener('mouseover', this.onMenuitemMouseover.bind(this));
+      menuitem.addEventListener('keydown', this.onMenuitemKeydown.bind(this))
+      menuitem.addEventListener('mouseover', this.onMenuitemMouseover.bind(this))
     })
   }
 
   registerbuttonEvents() {
-    this.button?.addEventListener('keydown', this.onButtonKeydown.bind(this));
-    this.button?.addEventListener('click', this.onButtonClick.bind(this));
+    this.button?.addEventListener('keydown', this.onButtonKeydown.bind(this))
+    this.button?.addEventListener('click', this.onButtonClick.bind(this))
   }
 
   setFocusToMenuitem(newMenuitem: HTMLElement | null) {
     this.getAllAvailableMenuitems().forEach(function (item) {
       if (item === newMenuitem) {
-        item.tabIndex = 0;
-        newMenuitem.focus();
+        item.tabIndex = 0
+        newMenuitem.focus()
       } else {
-        item.tabIndex = -1;
+        item.tabIndex = -1
       }
-    });
+    })
   }
 
   setFocusToFirstMenuitem() {
-    let firstMenuitem = this.getAllAvailableMenuitems()[0]
-    this.setFocusToMenuitem(firstMenuitem);
+    const firstMenuitem = this.getAllAvailableMenuitems()[0]
+    this.setFocusToMenuitem(firstMenuitem)
   }
 
   setFocusToLastMenuitem() {
-    let allMenuitems = this.getAllAvailableMenuitems()
-    this.setFocusToMenuitem(allMenuitems[allMenuitems.length - 1]);
+    const allMenuitems = this.getAllAvailableMenuitems()
+    this.setFocusToMenuitem(allMenuitems[allMenuitems.length - 1])
   }
 
   setFocusToPreviousMenuitem(currentMenuitem: HTMLElement) {
-    let allMenuitems = this.getAllAvailableMenuitems()
-    let newMenuitem = findPreviousSibiling(allMenuitems, currentMenuitem)
-    this.setFocusToMenuitem(newMenuitem);
+    const allMenuitems = this.getAllAvailableMenuitems()
+    const newMenuitem = findPreviousSibiling(allMenuitems, currentMenuitem)
+    this.setFocusToMenuitem(newMenuitem)
   }
 
   setFocusToNextMenuitem(currentMenuitem: HTMLElement) {
-    let allMenuitems = this.getAllAvailableMenuitems()
-    let newMenuitem = findNextSibiling(allMenuitems, currentMenuitem)
-    this.setFocusToMenuitem(newMenuitem);
+    const allMenuitems = this.getAllAvailableMenuitems()
+    const newMenuitem = findNextSibiling(allMenuitems, currentMenuitem)
+    this.setFocusToMenuitem(newMenuitem)
   }
 
   setFocusByFirstCharacter(currentMenuitem: HTMLElement, char: string) {
-    let allMenuitems = this.getAllAvailableMenuitems()
-    let matchingItem = this.findMatchingItem(allMenuitems, currentMenuitem, char)
-    this.setFocusToMenuitem(matchingItem);
+    const allMenuitems = this.getAllAvailableMenuitems()
+    const matchingItem = this.findMatchingItem(allMenuitems, currentMenuitem, char)
+    this.setFocusToMenuitem(matchingItem)
   }
 
   getAllAvailableMenuitems(): HTMLElement[] {
@@ -117,8 +117,8 @@ export default class MenuButtonLinks {
 
   openPopup() {
     if (this.menu && this.button) {
-      this.menu.style.display = 'block';
-      this.button.setAttribute('aria-expanded', 'true');
+      this.menu.style.display = 'block'
+      this.button.setAttribute('aria-expanded', 'true')
       this.clickOutside.on(this.button.parentElement, this.closePopup.bind(this))
     }
   }
@@ -126,19 +126,19 @@ export default class MenuButtonLinks {
   closePopup() {
     if (this.isOpen()) {
       if (this.menu && this.button) {
-        this.button.removeAttribute('aria-expanded');
-        this.menu.style.display = 'none';
+        this.button.removeAttribute('aria-expanded')
+        this.menu.style.display = 'none'
         this.clickOutside.dispose()
       }
     }
   }
 
   isOpen() {
-    return this.button?.getAttribute('aria-expanded') === 'true';
+    return this.button?.getAttribute('aria-expanded') === 'true'
   }
 
   onButtonKeydown(event: KeyboardEvent) {
-    let key = event.key
+    const key = event.key
     let flag = false
 
 
@@ -147,7 +147,7 @@ export default class MenuButtonLinks {
       case EVENT_KEY.RETURN:
       case EVENT_KEY.ARROW_DOWN:
       case EVENT_KEY.DOWN:
-        this.openPopup();
+        this.openPopup()
         this.setFocusToFirstMenuitem()
         flag = true
         break
@@ -175,82 +175,82 @@ export default class MenuButtonLinks {
 
   onButtonClick(event: MouseEvent) {
     if (this.isOpen()) {
-      this.closePopup();
-      this.button?.focus();
+      this.closePopup()
+      this.button?.focus()
     } else {
-      this.openPopup();
-      this.setFocusToFirstMenuitem();
+      this.openPopup()
+      this.setFocusToFirstMenuitem()
     }
 
-    event.stopPropagation();
-    event.preventDefault();
+    event.stopPropagation()
+    event.preventDefault()
   }
 
   onMenuitemKeydown(event: KeyboardEvent) {
-    let tgt = <HTMLElement>event.currentTarget
-    let key = event.key
-    let flag = false;
+    const tgt = <HTMLElement>event.currentTarget
+    const key = event.key
+    let flag = false
 
     function isPrintableCharacter(str: string) {
-      return str.length === 1 && str.match(/\S/);
+      return str.length === 1 && str.match(/\S/)
     }
 
     if (event.ctrlKey || event.altKey || event.metaKey) {
-      return;
+      return
     }
 
     switch (key) {
       case EVENT_KEY.SPACE:
-        this.closePopup();
+        this.closePopup()
         if ((<HTMLAnchorElement>tgt)?.href) {
-          window.location.href = (<HTMLAnchorElement>tgt)?.href;
+          window.location.href = (<HTMLAnchorElement>tgt)?.href
         }
-        break;
+        break
       case EVENT_KEY.ESC:
       case EVENT_KEY.ESCAPE:
-        this.closePopup();
-        this.button?.focus();
-        flag = true;
-        break;
+        this.closePopup()
+        this.button?.focus()
+        flag = true
+        break
       case EVENT_KEY.UP:
       case EVENT_KEY.ARROW_UP:
-        this.setFocusToPreviousMenuitem(tgt);
-        flag = true;
-        break;
+        this.setFocusToPreviousMenuitem(tgt)
+        flag = true
+        break
       case EVENT_KEY.DOWN:
       case EVENT_KEY.ARROW_DOWN:
-        this.setFocusToNextMenuitem(tgt);
-        flag = true;
-        break;
+        this.setFocusToNextMenuitem(tgt)
+        flag = true
+        break
       case EVENT_KEY.HOME:
       case EVENT_KEY.PAGE_UP:
-        this.setFocusToFirstMenuitem();
-        flag = true;
-        break;
+        this.setFocusToFirstMenuitem()
+        flag = true
+        break
       case EVENT_KEY.END:
       case EVENT_KEY.PAGE_DOWN:
-        this.setFocusToLastMenuitem();
-        flag = true;
-        break;
+        this.setFocusToLastMenuitem()
+        flag = true
+        break
       case EVENT_KEY.TAB:
-        this.closePopup();
-        break;
+        this.closePopup()
+        break
       default:
         if (isPrintableCharacter(key)) {
-          this.setFocusByFirstCharacter(tgt, key);
-          flag = true;
+          this.setFocusByFirstCharacter(tgt, key)
+          flag = true
         }
-        break;
+        break
     }
 
     if (flag) {
-      event.stopPropagation();
-      event.preventDefault();
+      event.stopPropagation()
+      event.preventDefault()
     }
   }
 
   onMenuitemMouseover(event: MouseEvent) {
-    let tgt = <HTMLElement>event.currentTarget;
-    tgt?.focus();
+    const tgt = <HTMLElement>event.currentTarget
+    tgt?.focus()
   }
 }

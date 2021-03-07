@@ -2,14 +2,14 @@ import { findNextSibiling, findPreviousSibiling, useFindItemMatchingChar } from 
 
 describe('dom.ts test', () => {
   test('find next sibling returns first sibiling when current one is the last one', () => {
-    let list = [1, 2, 3]
-    let nextSibiling = findNextSibiling(list, list[list.length - 1])
+    const list = [1, 2, 3]
+    const nextSibiling = findNextSibiling(list, list[list.length - 1])
     expect(nextSibiling).toBe(list[0])
   })
 
   test('find previsou sibling returns first sibiling when last one is the first one', () => {
-    let list = [1, 2, 3]
-    let previousSibiling = findPreviousSibiling(list, list[0])
+    const list = [1, 2, 3]
+    const previousSibiling = findPreviousSibiling(list, list[0])
     expect(previousSibiling).toBe(list[list.length - 1])
   })
 
@@ -40,25 +40,25 @@ describe('dom.ts test', () => {
     })
 
     test('match single character', () => {
-      let findItemMatchingChar = useFindItemMatchingChar()
-      let item = findItemMatchingChar(options, current, 'a')
+      const findItemMatchingChar = useFindItemMatchingChar()
+      const item = findItemMatchingChar(options, current, 'a')
       expect(item.innerText).toBe('a')
     })
 
     test('concat following characters if keep typing', () => {
-      let findItemMatchingChar = useFindItemMatchingChar()
-      let current = options[2]
+      const findItemMatchingChar = useFindItemMatchingChar()
+      const current = options[2]
       findItemMatchingChar(options, current, 'a')
-      let item = findItemMatchingChar(options, current, 'b')
+      const item = findItemMatchingChar(options, current, 'b')
       expect(item.innerText).toBe('ab')
     })
 
     test('clear previous character after clear key timeout', () => {
       jest.useFakeTimers()
-      let findItemMatchingChar = useFindItemMatchingChar()
+      const findItemMatchingChar = useFindItemMatchingChar()
       findItemMatchingChar(options, current, 'a')
       jest.runAllTimers()
-      let item = findItemMatchingChar(options, current, 'b')
+      const item = findItemMatchingChar(options, current, 'b')
       expect(item.innerText).toBe('b')
     })
   })

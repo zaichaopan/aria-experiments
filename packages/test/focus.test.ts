@@ -1,15 +1,19 @@
-import { setFocusToFirstItem, useFocusTrap } from '../focus'
+import { setFocusToFirstItem, useFocusTrap, useRestoreFocus } from '../focus'
 
 describe('focus.ts test', () => {
   beforeAll(() => {
     // mock offsetHeight and offsetWith so they are considered visible during test
     Object.defineProperties(window.HTMLElement.prototype, {
       offsetHeight: {
-        get() { return 10 }
+        get() {
+          return 10
+        },
       },
       offsetWidth: {
-        get() { return 10 }
-      }
+        get() {
+          return 10
+        },
+      },
     })
   })
 
@@ -82,5 +86,20 @@ describe('focus.ts test', () => {
     focusTrap.dispose()
     document.dispatchEvent(event)
     expect(spyNameInput).not.toHaveBeenCalled()
+  })
+
+  test('restore close', () => {
+    document.body.innerHTML = `
+      <input type="text" id="focus1">
+      <input type="text" id="focus2">
+  `
+    const focus1 = document.querySelector('#focus1') as HTMLElement
+    const spyFocus1 = jest.spyOn(focus1, 'focus')
+    focus1.focus()
+    const restoreFocus = useRestoreFocus()
+    const focus2 = document.querySelector('#focus2') as HTMLElement
+    focus2.focus()
+    restoreFocus()
+    expect(spyFocus1).toHaveBeenCalledTimes(2)
   })
 })

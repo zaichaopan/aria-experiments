@@ -1,7 +1,7 @@
 <template>
   <teleport to="#modal">
     <transition name="modal">
-      <div class="modal-overlay" v-if="visible">
+      <div v-if="visible" class="modal-overlay">
         <div
           :role="role"
           :tabindex="-1"
@@ -20,18 +20,12 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  watch,
-  computed,
-  onUnmounted,
-  PropType,
-} from "vue";
-import useModal from "../../packages/useModal";
-import { useFocusTrap, setFocusToFirstItem } from "../../packages/focus";
-import useClickOutside from "../../packages/useClickOutside";
-import { randomString } from "../../packages/string";
-import { useEscKeyHandler } from "../../packages/keyboard";
+import { defineComponent, watch, computed, onUnmounted, PropType } from 'vue'
+import useModal from '../../packages/useModal'
+import { useFocusTrap, setFocusToFirstItem, useRestoreFocus } from '../../packages/focus'
+import useClickOutside from '../../packages/useClickOutside'
+import { randomString } from '../../packages/string'
+import { useEscKeyHandler } from '../../packages/keyboard'
 
 export default defineComponent({
   props: {
@@ -40,8 +34,8 @@ export default defineComponent({
       required: true,
     },
     role: {
-      type: String as PropType<"dialog" | "alertdialog">,
-      default: "dialog",
+      type: String as PropType<'dialog' | 'alertdialog'>,
+      default: 'dialog',
     },
     clickToClose: {
       type: Boolean,
@@ -50,60 +44,69 @@ export default defineComponent({
   },
   setup(props) {
     const visible = computed(() => {
-      return name.value === props.name;
-    });
-    const title = randomString();
-    const focusTrap = useFocusTrap();
-    const escKeyHandler = useEscKeyHandler();
-    const clickOutside = useClickOutside();
-    const { name, hide } = useModal();
+      return modalName.value === props.name
+    })
+    const title = randomString()
+    const focusTrap = useFocusTrap()
+    const escKeyHandler = useEscKeyHandler()
+    const clickOutside = useClickOutside()
+    const { name: modalName, hide } = useModal()
+    let restoreFocus: () => void
 
     const showModal = () => {
-      const modal = document.querySelector(`.${name.value}-modal`) as HTMLElement;
-      focusTrap.on(modal);
-      setFocusToFirstItem(modal);
+      const modal = document.querySelector(
+        `.${modalName.value}-modal`
+      ) as HTMLElement
+      focusTrap.on(modal)
+      restoreFocus = useRestoreFocus()
+      setFocusToFirstItem(modal)
       clickOutside.on(modal, () => {
         if (props.clickToClose) {
-          hide(props.name);
+          hide(props.name)
         }
-      });
+      })
 
       escKeyHandler.on(() => {
         if (props.clickToClose) {
-          hide(props.name);
+          hide(props.name)
         }
-      });
-    };
+      })
+    }
 
     const hideModal = () => {
-      focusTrap.dispose();
-      clickOutside.dispose();
-      escKeyHandler.dispose();
-    };
+      focusTrap.dispose()
+      clickOutside.dispose()
+      escKeyHandler.dispose()
+      const MODAL_DISAPPEAR_IN_MS = 350
+      setTimeout(()=> {
+        restoreFocus()
+      }, MODAL_DISAPPEAR_IN_MS)
+     
+    }
 
     watch(
       visible,
       () => {
-        visible.value ? showModal() : hideModal();
+        visible.value ? showModal() : hideModal()
       },
       {
-        flush: "post",
+        flush: 'post',
       }
-    );
+    )
 
     onUnmounted(() => {
       if (visible.value) {
-        hide(props.name);
+        hide(props.name)
       }
-    });
+    })
 
     return {
       visible,
-      name,
+      modalName,
       title,
-    };
+    }
   },
-});
+})
 </script>
 
 <style scoped>

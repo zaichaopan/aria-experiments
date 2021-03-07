@@ -27,7 +27,7 @@ export const useEscKeyHandler = (): {
   const handler = (event: KeyboardEvent) => {
     if (event.key === EVENT_KEY.ESCAPE) {
       _onESCPressed()
-      event.stopPropagation();
+      event.stopPropagation()
     }
   }
 

@@ -1,6 +1,6 @@
 import { ref, Ref } from 'vue'
 
-let name: Ref<string> = ref('')
+const name: Ref<string> = ref('')
 
 interface modal {
   name: Ref<string>,

@@ -1,6 +1,6 @@
 export type clickOutside = {
   on: (container: HTMLElement | null, onClickOutsideFn: (event?: MouseEvent) => void) => void,
-  dispose: ()=>void
+  dispose: () => void
 }
 
 export default function useClickOutside(): clickOutside {
@@ -21,7 +21,7 @@ export default function useClickOutside(): clickOutside {
     on: (container: HTMLElement | null, onClickOutsideFn: (event?: MouseEvent) => void) => {
       _container = container
       _onClickOutsideFn = onClickOutsideFn
-      window.addEventListener('mousedown', onclickOutsideFnWrapper);
+      window.addEventListener('mousedown', onclickOutsideFnWrapper)
     },
     dispose: () => {
       window.removeEventListener('mousedown', onclickOutsideFnWrapper)
