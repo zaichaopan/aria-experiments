@@ -88,7 +88,7 @@ describe('focus.ts test', () => {
     expect(spyNameInput).not.toHaveBeenCalled()
   })
 
-  test('restore close', () => {
+  test('restore focus', () => {
     document.body.innerHTML = `
       <input type="text" id="focus1">
       <input type="text" id="focus2">
