@@ -80,7 +80,7 @@
     class="border px-4 py-2 h-10"
     @click="clickOpen"
   >
-    show button
+    Open Dialog
   </button>
 </template>
 
