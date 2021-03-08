@@ -98,7 +98,8 @@ export default defineComponent({
       focusTrap.dispose()
       clickOutside.dispose()
       escKeyHandler.dispose()
-      const MODAL_DISAPPEAR_IN_MS = 350
+      restoreFocus()
+      const MODAL_DISAPPEAR_IN_MS = 50
       setTimeout(() => {
         restoreFocus()
       }, MODAL_DISAPPEAR_IN_MS)
