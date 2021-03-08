@@ -29,7 +29,7 @@ const routes = [
   },
   {
     path: '/dialog',
-    component: lazyLoadComponent('alertDialog')
+    component: lazyLoadComponent('signinDialog')
   }
 ]
 

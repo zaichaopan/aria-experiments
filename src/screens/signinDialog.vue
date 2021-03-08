@@ -1,0 +1,115 @@
+<template>
+  <base-modal
+    name="signin"
+    role="dialog"
+    :click-to-close="true"
+    labelled-by="sigin-modal-label"
+  >
+    <div class="w-full px-3">
+      <div class="text-center my-5">
+        <h1 id="signin-modal-label" class="font-bold text-3xl text-gray-900">
+          REGISTER
+        </h1>
+        <p>Enter your information to register</p>
+      </div>
+
+      <div class="flex flex-col">
+        <div class="flex">
+          <div class="w-1/2 px-3 mb-5">
+            <label for="" class="text-xs font-semibold px-1">First name</label>
+            <div class="flex">
+              <input
+                type="text"
+                class="w-full px-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
+                placeholder="John"
+              />
+            </div>
+          </div>
+          <div class="w-1/2 px-3 mb-5">
+            <label for="" class="text-xs font-semibold px-1">Last name</label>
+            <div class="flex">
+              <input
+                type="text"
+                class="w-full px-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
+                placeholder="Smith"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="flex">
+          <div class="w-full px-3 mb-5">
+            <label for="" class="text-xs font-semibold px-1">Email</label>
+            <div class="flex">
+              <input
+                type="email"
+                class="w-full px-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
+                placeholder="johnsmith@example.com"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="flex">
+          <div class="w-full px-3 mb-12">
+            <label for="" class="text-xs font-semibold px-1">Password</label>
+            <div class="flex">
+              <input
+                type="password"
+                class="w-full px-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
+                placeholder="************"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex">
+        <div class="w-full px-3 mb-5">
+          <button
+            class="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold"
+          >
+            REGISTER NOW
+          </button>
+        </div>
+      </div>
+    </div>
+  </base-modal>
+
+  <button
+    id="open-button"
+    type="button"
+    class="border px-4 py-2 h-10"
+    @click="clickOpen"
+  >
+    show button
+  </button>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+import useModal from '../../packages/useModal'
+import BaseModal from '../components/BaseModal.vue'
+
+export default defineComponent({
+  components: { BaseModal },
+  setup() {
+    const clickOpen = () => {
+      show('signin')
+    }
+
+    const closeModal = () => {
+      hide('signin')
+    }
+
+    const { show, hide, name } = useModal()
+    return {
+      show,
+      hide,
+      clickOpen,
+      closeModal,
+      name,
+    }
+  },
+})
+</script>
+
+<style scoped></style>

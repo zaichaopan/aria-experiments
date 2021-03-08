@@ -93,13 +93,13 @@ describe('focus.ts test', () => {
       <input type="text" id="focus1">
       <input type="text" id="focus2">
   `
-    const focus1 = document.querySelector('#focus1') as HTMLElement
-    const spyFocus1 = jest.spyOn(focus1, 'focus')
-    focus1.focus()
+    const itemNeedRestore = document.querySelector('#focus1') as HTMLElement
+    const spyFocusOnItemNeedRestore = jest.spyOn(itemNeedRestore, 'focus')
+    itemNeedRestore.focus()
     const restoreFocus = useRestoreFocus()
-    const focus2 = document.querySelector('#focus2') as HTMLElement
-    focus2.focus()
+    const anotherItem = document.querySelector('#focus2') as HTMLElement
+    anotherItem.focus()
     restoreFocus()
-    expect(spyFocus1).toHaveBeenCalledTimes(2)
+    expect(spyFocusOnItemNeedRestore).toHaveBeenCalledTimes(2)
   })
 })
